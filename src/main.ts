@@ -184,7 +184,7 @@ async function generateEmbeddings({
       )
       for (const {slug, heading, content} of sections) {
         // OpenAI recommends replacing newlines with spaces for best results (specific to embeddings)
-        const input = content.replace(/\n/g, ' ')
+        const input = content.replaceAll("\n", " "),
 
         try {
           const openai = new OpenAI({
@@ -194,12 +194,6 @@ async function generateEmbeddings({
             input: input,
             model: 'text-embedding-3-small'
           })
-
-          if (embeddingResponse.status !== 200) {
-            throw new Error(inspect(embeddingResponse.data, false, 2))
-          }
-
-
           const {error: insertPageSectionError, data: pageSection} =
             await supabaseClient
               .from('page_section')

@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import {createClient} from '@supabase/supabase-js'
-import 'openai'
+import OpenAI from 'https://deno.land/x/openai@v4.24.0/mod.ts'
 import {Configuration, OpenAIApi} from 'openai'
 import {inspect} from 'util'
 import {v4 as uuidv4} from 'uuid'
@@ -187,14 +187,12 @@ async function generateEmbeddings({
         const input = content.replace(/\n/g, ' ')
 
         try {
-          const configuration = new Configuration({
-            apiKey: openaiKey
+          const openai = new OpenAI({
+            apiKey: openaiKey,
           })
-          const openai = new OpenAIApi(configuration)
-
-          const embeddingResponse = await openai.createEmbedding({
-            model: 'text-embedding-ada-002',
-            input
+          const embeddingResponse = await openai.embeddings.create({
+            input: input,
+            model: 'text-embedding-3-small'
           })
 
           if (embeddingResponse.status !== 200) {

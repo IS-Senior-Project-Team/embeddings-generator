@@ -209,7 +209,7 @@ async function generateEmbeddings({
                 heading,
                 content,
                 token_count: embeddingResponse.usage.total_tokens,
-                embedding: embeddingResponse.data.embedding
+                embedding: embeddingResponse.data[0].embedding
               })
               .select()
               .limit(1)

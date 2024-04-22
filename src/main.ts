@@ -199,7 +199,6 @@ async function generateEmbeddings({
             throw new Error(inspect(embeddingResponse.data, false, 2))
           }
 
-          const [responseData] = embeddingResponse.data.data
 
           const {error: insertPageSectionError, data: pageSection} =
             await supabaseClient
@@ -209,8 +208,8 @@ async function generateEmbeddings({
                 slug,
                 heading,
                 content,
-                token_count: embeddingResponse.data.usage.total_tokens,
-                embedding: responseData.embedding
+                token_count: embeddingResponse.usage.total_tokens,
+                embedding: embeddingResponse.data.embedding
               })
               .select()
               .limit(1)
